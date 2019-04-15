@@ -10,11 +10,14 @@ import os
 import math
 import glob
 
-listing = os.listdir("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/")
+# listing = os.listdir("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/")
+listing = pd.read_csv('data.csv')
 
 NP = []
 
-for file in listing:
+# for file in listing:
+for file in listing.Video_ID:
+
     listing_2  = os.listdir("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/" + file + "/" )
 
     X = []
