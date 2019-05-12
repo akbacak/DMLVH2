@@ -24,12 +24,12 @@ from skimage.transform import resize   # for resizing images
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers.recurrent import LSTM
 
-Y = pd.read_csv(r'/home/ubuntu/keras/enver/dmlvh2/Y2.csv') # Video files labels, one hot encoded
+Y = pd.read_csv(r'/home/ubuntu/keras/enver/dmlvh2/Y.csv') # Video files labels, one hot encoded
 Y.shape
 print(Y.shape[:])
 
 
-X = np.load(open('/home/ubuntu/keras/enver/dmlvh2/NP2.npy')) # Join video frames in to one NPY file , see deneme.py
+X = np.load(open('/home/ubuntu/keras/enver/dmlvh2/NP.npy')) # Join video frames in to one NPY file , see deneme.py
 X.shape
 print(X.shape[:])   # (number of videos, number frames in each video, 7,7,512)
 X = X.reshape(X.shape[0], X.shape[1] , X.shape[2] * X.shape[3] * X.shape[4]) # (number of videos, number frames in each video, 7x7x512)
@@ -39,14 +39,13 @@ X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.2 ,rando
 
 batch_size = 32
 epochs = 120
-hash_bits = 512
+hash_bits = 256
 
 
 visible = Input(shape = (X.shape[1] ,X.shape[2]))
-lstm_1    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = True  )(visible)
-lstm_2    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(lstm_1)
+lstm_2    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(visible)
 Dense_2   = Dense(hash_bits, activation='sigmoid')(lstm_2)
-Dense_3   = Dense(4, activation='sigmoid')(Dense_2)
+Dense_3   = Dense(5, activation='sigmoid')(Dense_2)
 model     = Model(input = visible, output=Dense_3)
 print(model.summary())
 
@@ -68,9 +67,9 @@ model.compile(loss = c_loss(noise_1 = tf.to_float(Dense_2 > 0.5 ), noise_2 = Den
 history = model.fit(X_train, Y_train, shuffle=True, batch_size=batch_size,epochs=epochs,verbose=1, validation_data=(X_valid, Y_valid) )
 
 model_json = model.to_json()
-with open("models/dmlvh2_mLSTM_512_2_model.json", "w") as json_file:
+with open("models/dmlvh2_TEST_256_model.json", "w") as json_file:
     json_file.write(model_json)
-model.save_weights("models/dmlvh2_mLSTM_512_2_weights.h5")
+model.save_weights("models/dmlvh2_TEST_256_weights.h5")
 
 
 

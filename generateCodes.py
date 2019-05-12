@@ -10,16 +10,16 @@ import os
 np.set_printoptions(linewidth=8192)
 
 
-json_file = open('models/dmlvh2_256_model.json', 'r')
+json_file = open('models/dmlvh2_mLSTM_512_2_model.json', 'r')
 model = json_file.read()
 json_file.close()
 model = model_from_json(model)
-model.load_weights("models/dmlvh2_256_weights.h5")
-model = Model(inputs=model.input, outputs=model.get_layer('dense_1').output) # dense_2 for features , dense_3 for predictions
+model.load_weights("models/dmlvh2_mLSTM_512_2_weights.h5")
+model = Model(inputs=model.input, outputs=model.get_layer('dense_1').output) # dense_1 for features , dense_2 for predictions
 
 
 X1 = []
-X1 = np.load(open("NPY_videos/f2s2t2.mp4.npy"))
+X1 = np.load(open("NPY_videos2/36.mp4.npy"))
 X1.shape
 print(X1.shape[:])
 X1 = X1.reshape(1, X1.shape[0], X1.shape[1] * X1.shape[2] * X1.shape[3] )
@@ -29,7 +29,7 @@ binary_codes_1 = binary_codes_1.astype(int)
 print(binary_codes_1)
 
 X2 = []
-X2 = np.load(open("NPY_videos/f1t1s1.mp4.npy"))
+X2 = np.load(open("NPY_videos2/35.mp4.npy"))
 X2.shape
 print(X2.shape[:])
 X2 = X2.reshape(1, X2.shape[0], X2.shape[1] * X2.shape[2] * X2.shape[3] )

@@ -12,24 +12,23 @@ import glob
 
 
 # listing = os.listdir("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/")
-listing = pd.read_csv('data.csv')
+listing = pd.read_csv('data2.csv')
 
 NP = []
 
 # for file in listing:
 for file in listing.Video_ID:
 
-    listing_2  = os.listdir("/home/ubuntu/Desktop/myDataset/Frames/" + file + "/" )
+    listing_2  = os.listdir("/home/ubuntu/Desktop/myDataset2/Frames/" + file + "/" )
 
     X = []
     for images in listing_2:
-        image =  plt.imread("/home/ubuntu/Desktop/myDataset/Frames/" + file + "/" + images )
+        image =  plt.imread("/home/ubuntu/Desktop/myDataset2/Frames/" + file + "/" + images )
         X.append (image)
     X = np.array(X)
     print(X.shape)
 
-    image_size=224,
-    base_model = VGG16(weights='imagenet', include_top=False, input_shape=(X.shape[1:]))
+    base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224,224,3)) # input_shape=(X.shape[1:])
 
     batch_size = 48
     XX = base_model.predict(X, batch_size=batch_size, verbose=0, steps=None)
@@ -39,7 +38,7 @@ for file in listing.Video_ID:
     np.shape(NP)
     print(np.shape(NP))
 NP = np.array(NP)
-np.save(open("NP.npy", 'w'), NP)
+np.save(open("NP2.npy", 'w'), NP)
 
 
 

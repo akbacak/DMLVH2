@@ -10,16 +10,16 @@ import os
 import math
 import glob
 
-listing = os.listdir("/home/ubuntu/Desktop/myDataset/Frames/")
+listing = os.listdir("/home/ubuntu/Desktop/myDataset2/Frames/")
 
 count = 1
 
 for file in listing:
-    listing_2  = os.listdir("/home/ubuntu/Desktop/myDataset/Frames/" + file + "/" )
+    listing_2  = os.listdir("/home/ubuntu/Desktop/myDataset2/Frames/" + file + "/" )
 
     X = []
     for images in listing_2:
-        image =  plt.imread("/home/ubuntu/Desktop/myDataset/Frames/" + file + "/" + images )
+        image =  plt.imread("/home/ubuntu/Desktop/myDataset2/Frames/" + file + "/" + images )
         X.append (image)
     X = np.array(X)
     print(X.shape)
@@ -30,7 +30,7 @@ for file in listing:
     batch_size = 48
     XX = base_model.predict(X, batch_size=batch_size, verbose=0, steps=None)
     print(XX.shape)
-    np.save(open("NPY_videos/" + file + ".npy", 'w'), XX)
+    np.save(open("NPY_videos2/" + file + ".npy", 'w'), XX)
     count+=1
 
 

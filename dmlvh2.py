@@ -33,20 +33,19 @@ X = np.load(open('/home/ubuntu/keras/enver/dmlvh2/NP.npy')) # Join video frames 
 X.shape
 print(X.shape[:])   # (number of videos, number frames in each video, 7,7,512)
 X = X.reshape(X.shape[0], X.shape[1] , X.shape[2] * X.shape[3] * X.shape[4]) # (number of videos, number frames in each video, 7x7x512)
-X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.1 ,random_state=43)
+X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.25 ,random_state=43)
 
 
 
 batch_size = 128
 epochs = 300
-hash_bits = 256
+hash_bits = 512
 
 
 visible = Input(shape = (X.shape[1] ,X.shape[2]))
-#Flatten = Flatten()(visible)
-lstm    = LSTM(512 , input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(visible) 
-Dense_1 = Dense(1024, activation='relu')(lstm)
-Dense_2 = Dense(hash_bits, activation='sigmoid')(Dense_1)
+lstm    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(visible) 
+#Dense_1 = Dense(1024, activation='relu')(lstm)
+Dense_2 = Dense(hash_bits, activation='sigmoid')(lstm)
 Dense_3 = Dense(3, activation='sigmoid')(Dense_2)
 model = Model(input = visible, output=Dense_3)
 print(model.summary())
@@ -56,6 +55,7 @@ import keras.backend as K
 def c_loss(noise_1, noise_2):
     def loss(y_true, y_pred):
         return (K.binary_crossentropy(y_true, y_pred) + (1/hash_bits) * (K.sum((noise_1 - noise_2)**2) )) 
+        #return (K.binary_crossentropy(y_true, y_pred) )
         # change to binary_crossentropy when using multilabel !
     return loss
 
@@ -72,7 +72,7 @@ with open("models/dmlvh2_512_model.json", "w") as json_file:
     json_file.write(model_json)
 model.save_weights("models/dmlvh2_512_weights.h5")
 
-
+'''
 params = {'legend.fontsize': 20,
           'legend.handlelength': 2,}
 plt.rcParams.update(params)
@@ -93,4 +93,4 @@ plt.ylabel('loss' , fontsize=20)
 plt.xlabel('epoch' , fontsize=20)
 plt.legend( ['train', 'validation'], loc='upper left')
 plt.show()
-
+'''

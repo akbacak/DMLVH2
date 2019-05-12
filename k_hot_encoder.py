@@ -8,11 +8,11 @@ import pandas as pd
 
 
 
-dataset = pd.read_csv('/home/ubuntu/keras/enver/dmlvh2/data.csv')
+dataset = pd.read_csv('/home/ubuntu/keras/enver/dmlvh2/data2.csv')
 Y = dataset.iloc[:,1].values
 mlb = MultiLabelBinarizer()
 
 YY = mlb.fit_transform(Y)
 print(YY)
-np.savetxt('Y.csv',YY, fmt='%d')
+np.savetxt('Y2.csv',YY, fmt='%d')
 

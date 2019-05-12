@@ -15,14 +15,14 @@ import math
 import cv2
 import re
 
-listing = os.listdir("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_videos/")
+listing = os.listdir("/home/ubuntu/Desktop/myDataset2/Videos/")
 
 count = 1
 for file in listing:
-    video = cv2.VideoCapture("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_videos/" + file)
+    video = cv2.VideoCapture("/home/ubuntu/Desktop/myDataset2/Videos/" + file)
     print(video.isOpened())
     framerate = video.get(5)
-    os.makedirs("/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/" + file )
+    os.makedirs("/home/ubuntu/Desktop/myDataset2/Frames/" + file )
     while (video.isOpened()):
         frameId = video.get(1)
         success,image = video.read()
@@ -31,7 +31,7 @@ for file in listing:
         if (success != True):
             break
         if (frameId % math.floor(framerate) == 0):
-            filename = "/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/CPSM_images/" + file +"/" + file + "_" + str(int(frameId / math.floor(framerate))+1) + ".jpg"
+            filename = "/home/ubuntu/Desktop/myDataset2/Frames/" + file +"/" + file + "_" + str(int(frameId / math.floor(framerate))+1) + ".jpg"
             print(filename)
             cv2.imwrite(filename,image)
     video.release()

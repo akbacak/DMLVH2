@@ -19,13 +19,13 @@ Y = ohe.fit_transform(Y).toarray()
 
 from keras.utils import to_categorical
 
-dataset = pd.read_csv('/home/ubuntu/Desktop/Thesis_Follow_Up_3/Datasets/CPSM/data2.csv')
-Y2 = dataset.iloc[:,1].values
-print(Y2)
+dataset = pd.read_csv('/home/ubuntu/keras/enver/dmlvh2/data.csv')
+Y = dataset.iloc[:,1].values
+print(Y)
 
-Y2 =  to_categorical(Y2)
-print(Y2)
+YY =  to_categorical(Y)
+print(YY)
 
-features = Y2
+features = YY
 features = features.astype(int)
-np.savetxt('Y2.csv',features, fmt='%d')
+np.savetxt('Y.csv',features, fmt='%d')
