@@ -43,8 +43,8 @@ hash_bits = 512
 
 
 visible = Input(shape = (X.shape[1] ,X.shape[2]))
-lstm_1    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = True  )(visible)
-lstm_2    = LSTM(1024 , input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(lstm_1)
+lstm_1    = LSTM(1024 , dropout=0.1, recurrent_dropout=0.5, input_shape=(X.shape[1], X.shape[2]), return_sequences = True  )(visible)
+lstm_2    = LSTM(1024 , dropout=0.1, recurrent_dropout=0.5, input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(lstm_1)
 Dense_2   = Dense(hash_bits, activation='sigmoid')(lstm_2)
 Dense_3   = Dense(4, activation='sigmoid')(Dense_2)
 model     = Model(input = visible, output=Dense_3)
