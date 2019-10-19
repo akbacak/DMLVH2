@@ -43,21 +43,18 @@ X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.2 ,rando
 
 batch_size = 32
 epochs = 120
-hash_bits = 512
+hash_bits = 128
 
-
+'''
 def custom_activation(x):
     return (K.sigmoid(x) * 10 )
-
+'''
 visible = Input(shape = (X.shape[1] ,X.shape[2]))
-lstm_1    = LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = True  )(visible)
-lstm_2    = LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = False )(lstm_1)
-#lstm_1    = Bidirectional(LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = True  ))(visible)
-#lstm_2    = Bidirectional(LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = False ))(lstm_1)
-#x = keras.layers.concatenate([lstm_2, lstm_22])
-Dense_2   = Dense(hash_bits, activation= custom_activation )(lstm_2)
+blstm_1   = Bidirectional(LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = True  ))(visible)
+blstm_2   = Bidirectional(LSTM(1024 , dropout=0.1, recurrent_dropout=0.5,input_shape=(X.shape[1], X.shape[2]), return_sequences = False ))(blstm_1)
+Dense_2   = Dense(hash_bits, activation = 'sigmoid' )(blstm_2)
 batchNorm = BatchNormalization()(Dense_2)
-enver     = Dense(128, activation = custom_activation)(batchNorm)
+enver     = Dense(128, activation = 'sigmoid')(batchNorm)
 batchNorm2= BatchNormalization()(enver)
 Dense_3   = Dense(4, activation='sigmoid')(batchNorm2)
 model     = Model(input = visible, output=Dense_3)
@@ -65,11 +62,11 @@ print(model.summary())
 
 
 
-
+'''
 weights, biases = model.layers[5].get_weights()
 weights.shape
 print(weights.shape[:])
-
+'''
 
 
 import keras.backend as K
@@ -87,7 +84,7 @@ sgd = SGD(lr=0.001, decay = 1e-6, momentum=0.9, nesterov=True)
 
 callbacks_list = [
         keras.callbacks.EarlyStopping(monitor='val_acc',  mode='min',  verbose=1, patience=40),
-        keras.callbacks.ModelCheckpoint(filepath='models/dmlvh2_Bidirectional_512_2_weights.h5', monitor='val_loss', save_best_only=True ),
+        keras.callbacks.ModelCheckpoint(filepath='models/dmlvh2_Bidirectional_128_weights.h5', monitor='val_loss', save_best_only=True ),
         keras.callbacks.EarlyStopping(monitor='acc', mode='min',  verbose=1, patience=40),
         keras.callbacks.EarlyStopping(monitor='val_loss', mode='min',  verbose=1, patience=15),
        # keras.callbacks.TensorBoard(
@@ -106,7 +103,7 @@ history = model.fit(X_train, Y_train, shuffle=True, batch_size=batch_size,epochs
 
 
 model_json = model.to_json()
-with open("models/dmlvh2_Bidirectional_512_2_model.json", "w") as json_file:
+with open("models/dmlvh2_Bidirectional_128_model.json", "w") as json_file:
     json_file.write(model_json)
 #model.save_weights("models/test3_256_2_weights.h5")
 
