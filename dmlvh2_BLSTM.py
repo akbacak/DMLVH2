@@ -50,9 +50,9 @@ blstm_1   = Bidirectional(LSTM(1024, dropout=0.1, recurrent_dropout=0.5, input_s
 blstm_2   = Bidirectional(LSTM(1024, dropout=0.1, recurrent_dropout=0.5, input_shape=(X.shape[1], X.shape[2]), return_sequences = False ))(blstm_1)
 Dense_2   = Dense(hash_bits, activation = 'sigmoid' )(blstm_2)
 batchNorm = BatchNormalization()(Dense_2)
-enver   = Dense(128, activation = 'sigmoid')(batchNorm)
+enver   = Dense(8, activation = 'sigmoid')(batchNorm)
 batchNorm2= BatchNormalization()(enver)
-Dense_3   = Dense(4, activation='sigmoid')(Dense_2)
+Dense_3   = Dense(4, activation='sigmoid')(batchNorm2)
 model     = Model(input = visible, output=Dense_3)
 print(model.summary())
 
